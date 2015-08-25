@@ -5,6 +5,8 @@ package com.appdirect.backend.rest.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.when;
 
 import org.springframework.http.MediaType;
 import org.junit.Before;
@@ -15,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.rest.controllers.EventController;
 
@@ -49,5 +52,14 @@ public class EventControllerTest {
     
     @Test
     public void getExistingEvent() throws Exception{
+        Event event = new Event();
+        event.setId(1L);
+        event.setType("SUBSCRIPTION_ORDER");
+        
+        when(service.find(1L)).thenReturn(event);
+        
+        mockMvc.perform(get("/rest/events/1").accept(MediaType.APPLICATION_XML))
+        .andExpect(xpath(event.getType()).exists())
+        .andExpect(status().isOk());
     }
 }
