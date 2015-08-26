@@ -3,12 +3,19 @@
  */
 package com.appdirect.backend.core.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  * @author cweerasekera
  *
  */
+@Entity
 public class Event {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String type;
 

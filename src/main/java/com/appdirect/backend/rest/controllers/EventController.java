@@ -22,6 +22,7 @@ import com.appdirect.backend.rest.resources.asm.EventResourceAsm;
  *
  */
 @Controller
+@RequestMapping("/rest/events")
 public class EventController {
     private Logger LOG = LoggerFactory.getLogger(EventController.class);
     private EventService service;
@@ -32,7 +33,7 @@ public class EventController {
         LOG.trace("exit Contructor");
     }
     
-    @RequestMapping(value="/rest/events/{eventId}", method = RequestMethod.GET)
+    @RequestMapping(value="/{eventId}", method = RequestMethod.GET)
     public ResponseEntity<EventResource> getEvent(@PathVariable Long eventId){
         LOG.trace("enter getEvent()");
         Event event = service.find(eventId);

@@ -3,6 +3,9 @@
  */
 package com.appdirect.backend.rest.resources.asm;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import com.appdirect.backend.core.entities.Event;
@@ -23,6 +26,8 @@ public class EventResourceAsm extends ResourceAssemblerSupport<Event, EventResou
     public EventResource toResource(Event event) {
         EventResource res = new EventResource();
         res.setType(event.getType());
+        Link self = linkTo(EventController.class).slash(event.getId()).withSelfRel();
+        res.add(self);
         return res;
     }
 }

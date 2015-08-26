@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.appdirect.backend.core.services;
+package com.appdirect.backend.core.repositories;
 
 import com.appdirect.backend.core.entities.Event;
 
@@ -9,7 +9,7 @@ import com.appdirect.backend.core.entities.Event;
  * @author cweerasekera
  *
  */
-public interface EventService {
+public interface EventRepo {
     public Event find(Long id);
     public Event createEvent(Event event);
 }
