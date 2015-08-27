@@ -6,8 +6,10 @@ package com.appdirect.backend.rest.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.models.entities.EventEntity;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.rest.controllers.EventController;
 
@@ -41,7 +43,7 @@ public class EventControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
-    @Test
+    //@Test
     public void test() throws Exception{        
         mockMvc.perform(post("/test")                
                 .content("<Event xmlns:atom=\"http://www.w3.org/2005/Atom\"><type>SUBSCRIPTION_ORDER</type></Event>")
@@ -52,14 +54,15 @@ public class EventControllerTest {
     
     @Test
     public void getExistingEvent() throws Exception{
-        Event event = new Event();
-        event.setId(1L);
+        EventEntity event = new EventEntity();
         event.setType("SUBSCRIPTION_ORDER");
+        service.createEvent(event);
+        when(service.find(event.getUuid())).thenReturn(event);
         
-        when(service.find(1L)).thenReturn(event);
-        
-        mockMvc.perform(get("/rest/events/1").accept(MediaType.APPLICATION_XML))
-        .andExpect(xpath(event.getType()).exists())
-        .andExpect(status().isOk());
+        mockMvc.perform(get("/rest/events/"+event.getUuid()))
+        .andExpect(xpath("/EventResource/type").string(event.getType()))
+        //.andExpect(xpath("/EventResource//links/@href", hasItem(endsWith("/events/1"))).exists())
+        .andExpect(status().isOk())
+        .andDo(print());
     }
 }

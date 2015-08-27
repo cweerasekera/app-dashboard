@@ -3,13 +3,16 @@
  */
 package com.appdirect.backend.core.services;
 
-import com.appdirect.backend.core.entities.Event;
+import java.util.List;
+
+import com.appdirect.backend.core.models.entities.EventEntity;
 
 /**
  * @author cweerasekera
  *
  */
 public interface EventService {
-    public Event find(Long id);
-    public Event createEvent(Event event);
+    public EventEntity find(String id);
+    public List<EventEntity> findAllEvents();
+    public EventEntity createEvent(EventEntity event);
 }

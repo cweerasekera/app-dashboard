@@ -3,13 +3,16 @@
  */
 package com.appdirect.backend.core.repositories;
 
-import com.appdirect.backend.core.entities.Event;
+import java.util.List;
+
+import com.appdirect.backend.core.models.entities.EventEntity;
 
 /**
  * @author cweerasekera
  *
  */
 public interface EventRepo {
-    public Event find(Long id);
-    public Event createEvent(Event event);
+    public EventEntity findEvent(String id);
+    public List<EventEntity> findAllEvents();
+    public EventEntity createEvent(EventEntity event);
 }
