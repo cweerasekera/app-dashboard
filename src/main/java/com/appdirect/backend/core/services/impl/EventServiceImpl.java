@@ -13,6 +13,7 @@ import com.appdirect.backend.core.models.Event;
 import com.appdirect.backend.core.models.entities.EventEntity;
 import com.appdirect.backend.core.repositories.EventRepo;
 import com.appdirect.backend.core.services.EventService;
+import com.appdirect.backend.core.services.exceptions.EventExistsException;
 
 /**
  * @author cweerasekera
@@ -38,6 +39,10 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     public EventEntity createEvent(EventEntity event) {
+        EventEntity entity = repo.findEvent(event.getUuid());
+        if(entity != null){
+            throw new EventExistsException();
+        }
         return repo.createEvent(event);
     }
 

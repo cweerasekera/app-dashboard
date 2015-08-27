@@ -11,8 +11,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.appdirect.backend.core.models.Event;
 import com.appdirect.backend.core.models.entities.EventEntity;
 import com.appdirect.backend.core.repositories.EventRepo;
 
@@ -23,13 +26,20 @@ import com.appdirect.backend.core.repositories.EventRepo;
 @Repository
 public class JpaEventRepo implements EventRepo{
     
+    private static final Logger LOG = LoggerFactory.getLogger(JpaEventRepo.class);
+    
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public EventEntity createEvent(EventEntity event) {
-        em.persist(event);
-        return event;
+        LOG.trace("ENTER createEvent()");
+        try{
+            em.persist(event);
+            return event;
+        }finally{
+            LOG.trace("EXIT createEvent()");
+        }
     }
 
     @Override
@@ -40,7 +50,30 @@ public class JpaEventRepo implements EventRepo{
 
     @Override
     public EventEntity findEvent(String id) {
-        return em.find(EventEntity.class, id);
+        LOG.trace("ENTER findEvent()");
+        try {
+            LOG.debug("event Idd: {}", id);
+            EventEntity event = em.find(EventEntity.class, id);
+            LOG.debug("Event found: {}", event);
+            return event;
+        }catch (Exception e){
+           LOG.error(e.getMessage());
+           e.getStackTrace();
+           return null;
+        }finally{            
+            LOG.trace("EXIT findEvent()");
+        }
+    }
+
+    @Override
+    public Event createEventTest(Event event) {
+        LOG.trace("ENTER createEventTest()");
+        try{
+            em.persist(event);
+            return event;
+        }finally{
+            LOG.trace("EXIT createEventTest()");
+        }
     }
 
 }
