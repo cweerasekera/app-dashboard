@@ -32,6 +32,11 @@ public class EventEntity extends BaseEntity implements Event {
     @Column(name = "type", length = 20, nullable = false)
     private String type;
 
+    /*
+     * (non-Javadoc)
+     * @see com.appdirect.backend.core.models.Event#getType()
+     */
+    @Override
     public String getType() {
         return type;
     }

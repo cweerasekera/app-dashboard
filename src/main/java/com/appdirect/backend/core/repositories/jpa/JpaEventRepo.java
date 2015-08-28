@@ -64,16 +64,4 @@ public class JpaEventRepo implements EventRepo{
             LOG.trace("EXIT findEvent()");
         }
     }
-
-    @Override
-    public Event createEventTest(Event event) {
-        LOG.trace("ENTER createEventTest()");
-        try{
-            em.persist(event);
-            return event;
-        }finally{
-            LOG.trace("EXIT createEventTest()");
-        }
-    }
-
 }

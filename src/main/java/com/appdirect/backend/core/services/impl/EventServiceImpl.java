@@ -5,6 +5,8 @@ package com.appdirect.backend.core.services.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ import com.appdirect.backend.core.services.exceptions.EventExistsException;
 @Transactional
 public class EventServiceImpl implements EventService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EventServiceImpl.class);
+    
     @Autowired
     private EventRepo repo;
     
@@ -31,7 +35,12 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     public EventEntity find(String id) {
-        return repo.findEvent(id);
+        LOG.trace("ENTER find()");
+        try{
+            return repo.findEvent(id);
+        }finally{
+            LOG.trace("EXIT find()");
+        }       
     }
 
     /* (non-Javadoc)
@@ -39,11 +48,17 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     public EventEntity createEvent(EventEntity event) {
+        LOG.trace("ENTER createEvent()");
         EventEntity entity = repo.findEvent(event.getUuid());
         if(entity != null){
             throw new EventExistsException();
         }
-        return repo.createEvent(event);
+        
+        try{
+            return repo.createEvent(event);
+        }finally{
+            LOG.trace("EXIT createEvent()");
+        }
     }
 
     /*
@@ -52,7 +67,13 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     public List<EventEntity> findAllEvents() {
-        return repo.findAllEvents(); //TODO
+        LOG.trace("ENTER findAllEvents()");
+        //TODO
+        try{
+            return repo.findAllEvents();
+        }finally{
+            LOG.trace("EXIT findAllEvents()");
+        }
     }
 
 }
