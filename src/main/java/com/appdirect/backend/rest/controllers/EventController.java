@@ -35,19 +35,19 @@ public class EventController {
 
     @Autowired
     public EventController(EventService service){
-        LOG.trace("ENTER Contructor");
+        LOG.trace("ENTER Constructor()");
         this.eventService = service;
-        LOG.trace("EXIT Contructor");
+        LOG.trace("EXIT Constructor()");
     }
     
     @RequestMapping(value="/{eventId}", method = RequestMethod.GET)
     public ResponseEntity<EventResource> getEvent(@PathVariable Long eventId){
         LOG.trace("ENTER getEvent()");
         Event event = eventService.findEvent(eventId);
-        EventResource res = new EventResourceAsm().toResource(event);
 
         try{
             if(event != null){
+                EventResource res = new EventResourceAsm().toResource(event);
                 return new ResponseEntity<EventResource>(res, HttpStatus.OK);
             }else{
                 return new ResponseEntity<EventResource>(HttpStatus.NOT_FOUND);
@@ -62,11 +62,11 @@ public class EventController {
         LOG.trace("ENTER createEvent()");
         try{
             Event createdEvent = eventService.createEvent(sentEvent.toEvent());
-            LOG.debug("createdEvent: {}", createdEvent);
+            LOG.debug("createdEvent type: {}", createdEvent.getType());
             EventResource res = new EventResourceAsm().toResource(createdEvent);
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create(res.getLink("self").getHref()));
-            LOG.debug("res, headers: {}, {}", res, headers.getLocation());
+            LOG.debug("Location: {}", headers.getLocation());
             return new ResponseEntity<EventResource>(res,headers,HttpStatus.CREATED);
         }catch (EventExistsException e){
             LOG.error(e.getMessage(),e);
