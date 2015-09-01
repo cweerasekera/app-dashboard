@@ -6,9 +6,13 @@ package com.appdirect.backend.rest.controllers;
 import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
+import com.appdirect.backend.core.services.util.EventList;
 import com.appdirect.backend.rest.exceptions.ConflictException;
+import com.appdirect.backend.rest.resources.EventListResource;
 import com.appdirect.backend.rest.resources.EventResource;
+import com.appdirect.backend.rest.resources.asm.EventListResourceAsm;
 import com.appdirect.backend.rest.resources.asm.EventResourceAsm;
+import com.google.protos.cloud.sql.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -39,7 +40,25 @@ public class EventController {
         this.eventService = service;
         LOG.trace("EXIT Constructor()");
     }
-    
+
+    @RequestMapping(value = "/test")
+    public String test(){
+        return "view";
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<EventListResource> findAllEvents(){
+        LOG.trace("ENTER findAllEvents()");
+        EventList list = eventService.findAllEvents();
+        EventListResource resource =  new EventListResourceAsm().toResource(list);
+        try{
+            return new ResponseEntity<EventListResource>(resource,HttpStatus.OK);
+        }finally {
+            LOG.trace("EXIT findAllEvents()");
+        }
+
+    }
+
     @RequestMapping(value="/{eventId}", method = RequestMethod.GET)
     public ResponseEntity<EventResource> getEvent(@PathVariable Long eventId){
         LOG.trace("ENTER getEvent()");

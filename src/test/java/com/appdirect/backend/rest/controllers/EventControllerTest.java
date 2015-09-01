@@ -6,6 +6,8 @@ package com.appdirect.backend.rest.controllers;
 import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
+import com.appdirect.backend.core.services.util.EventList;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -13,11 +15,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.hamcrest.Matchers.hasItem;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.endsWith;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -83,5 +90,31 @@ public class EventControllerTest {
                 .andExpect(xpath("/EventResource/type").string(createdEvent.getType()))
                 .andExpect(status().isCreated())
                 .andDo(print());
+    }
+
+    @Test
+    public void findAllEvents() throws Exception{
+        List<Event> list = new ArrayList<Event>();
+
+        Event event1 = new Event();
+        event1.setId(1L);
+        event1.setType("Test Event 1");
+        list.add(event1);
+
+        Event event2 = new Event();
+        event2.setId(2L);
+        event2.setType("Test Event 2");
+        list.add(event2);
+
+        EventList eventList = new EventList(list);
+
+        when(service.findAllEvents()).thenReturn(eventList);
+
+        mockMvc.perform(get("/rest/events"))
+                //.andExpect(xpath("/EventResource/type"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
     }
 }

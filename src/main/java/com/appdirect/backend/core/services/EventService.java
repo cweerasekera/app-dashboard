@@ -4,6 +4,7 @@
 package com.appdirect.backend.core.services;
 
 import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.services.util.EventList;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  */
 public interface EventService {
-    public List<Event> findAllEvents();
+    public EventList findAllEvents();
     public Event findEvent(Long id);
     public Event createEvent(Event data);
     public Event deleteEvent(Long id);

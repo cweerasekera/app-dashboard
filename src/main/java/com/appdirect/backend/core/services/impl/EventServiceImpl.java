@@ -4,6 +4,7 @@ import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.repositories.EventRepo;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
+import com.appdirect.backend.core.services.util.EventList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,10 @@ public class EventServiceImpl implements EventService{
     private EventRepo eventRepo;
 
     @Override
-    public List<Event> findAllEvents() {
+    public EventList findAllEvents() {
         LOG.trace("ENTER findAllEvents()");
         try {
-            return eventRepo.findAllEvents();
+            return new EventList(eventRepo.findAllEvents());
         } finally {
             LOG.trace("EXIT findAllEvents()");
         }

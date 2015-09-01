@@ -9,7 +9,10 @@ import java.util.List;
  * Created by cweerasekera.
  */
 public class EventList {
-    private List<Event> events = new ArrayList<>();
+    public EventList(List<Event> list){
+        this.events = list;
+    }
+    private List<Event> events = new ArrayList<Event>();
     public List<Event> getEvents(){
         return events;
     }

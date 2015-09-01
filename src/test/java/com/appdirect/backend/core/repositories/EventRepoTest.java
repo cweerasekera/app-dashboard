@@ -4,6 +4,7 @@
 package com.appdirect.backend.core.repositories;
 
 import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.services.util.EventList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -58,6 +60,16 @@ public class EventRepoTest {
     @Transactional
     public void testFindAll(){
         LOG.trace("ENTER testFindAll()");
+
+        Event event1 = new Event();
+        event1.setType("Test Event 1");
+
+        Event event2 = new Event();
+        event2.setType("Test Event 2");
+
+        repo.createEvent(event1);
+        repo.createEvent(event2);
+
         List<Event> allEvents = repo.findAllEvents();
         assertNotNull(allEvents);
         for (Event event : allEvents){
