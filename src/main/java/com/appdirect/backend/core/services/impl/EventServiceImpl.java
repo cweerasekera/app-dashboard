@@ -48,14 +48,19 @@ public class EventServiceImpl implements EventService{
     @Override
     public Event createEvent(Event data) {
         LOG.trace("ENTER createEvent()");
-        Event event = eventRepo.findEvent(data.getId());
-        if(event != null){
-            throw new EventExistsException();
-        }
         try {
-            return eventRepo.createEvent(data);
-        } finally {
-            LOG.trace("EXIT createEvent()");
+            if (data.getId() == null) {
+                return eventRepo.createEvent(data);
+            } else {
+                Event event = eventRepo.findEvent(data.getId());
+                if (event != null) {
+                    throw new EventExistsException();
+                } else {
+                    return eventRepo.createEvent(data);
+                }
+            }
+        }finally {
+            LOG.trace("ENTER createEvent()");
         }
     }
 
