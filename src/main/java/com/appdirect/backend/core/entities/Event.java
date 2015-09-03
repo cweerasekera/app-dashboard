@@ -3,12 +3,7 @@
  */
 package com.appdirect.backend.core.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author cweerasekera
@@ -23,7 +18,7 @@ public class Event {
     public static final String QUERY_SELECT_ALL = "event.findAll";
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String type;
 

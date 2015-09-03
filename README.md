@@ -1,9 +1,9 @@
-App Engine Java Application
-Copyright (C) 2010-2012 Google Inc.
+REST API Java Application
+Copyright (C) 2015 1833833 Alberta Inc.
 
-## Skeleton application for use with App Engine Java.
+## Application endpoint for AppDirect app integration project.
 
-Requires [Apache Maven](http://maven.apache.org) 3.0 or greater, and JDK 6+ in order to run.
+Requires [Apache Maven](http://maven.apache.org) 3.0 or greater, and JDK 7+ in order to run.
 
 To build, run
 
@@ -13,12 +13,10 @@ Building will run the tests, but to explicitly run tests you can use the test ta
 
     mvn test
 
-To start the app, use the [App Engine Maven Plugin](http://code.google.com/p/appengine-maven-plugin/) that is already included in this demo.  Just run the command.
+To start the app, use the Heroku Webapp Runner (TM) that is already included in this demo.  Just run the command.
 
-    mvn appengine:devserver
+    java -jar target/dependency/webapp-runner.jar target/*.war
 
-For further information, consult the [Java App Engine](https://developers.google.com/appengine/docs/java/overview) documentation.
+Your application should start up on port 8080
 
-To see all the available goals for the App Engine plugin, run
-
-    mvn help:describe -Dplugin=appengine
+TODO Endpoint API Documentation
