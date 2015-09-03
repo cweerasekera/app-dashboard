@@ -96,4 +96,11 @@ public class EventController {
             LOG.trace("EXIT createEvent()");
         }
     }
+
+    @RequestMapping(value="/url/{eventUrl}", method = RequestMethod.GET)
+    public String processUrl(@PathVariable String eventUrl){
+        String response = eventService.subscribe(eventUrl);
+        LOG.debug("response {}", response);
+        return response;
+    }
 }

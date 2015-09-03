@@ -25,6 +25,13 @@ public class EventServiceImpl implements EventService{
     @Autowired
     private EventRepo eventRepo;
 
+    private String successResponse = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<result>\n" +
+            "    <success>true</success>\n" +
+            "    <message>Account creation successful</message>\n" +
+            "    <accountIdentifier>1</accountIdentifier>\n" +
+            "</result>";
+
     @Override
     public EventList findAllEvents() {
         LOG.trace("ENTER findAllEvents()");
@@ -72,5 +79,11 @@ public class EventServiceImpl implements EventService{
         } finally {
             LOG.trace("EXIT deleteEvent()");
         }
+    }
+
+    @Override
+    public String subscribe(String url) {
+        //TODO
+        return successResponse;
     }
 }

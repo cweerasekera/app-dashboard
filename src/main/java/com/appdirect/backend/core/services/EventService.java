@@ -17,4 +17,5 @@ public interface EventService {
     public Event findEvent(Long id);
     public Event createEvent(Event data);
     public Event deleteEvent(Long id);
+    public String subscribe(String url);
 }
