@@ -98,7 +98,9 @@ public class EventController {
 
     @RequestMapping(value="/url/{eventUrl}", method = RequestMethod.GET)
     public ResponseEntity<Result> processUrl(@PathVariable String eventUrl){
+        LOG.trace("ENTER processUrl()");
         //Event createdEvent = eventService.createEvent();
+        LOG.debug("EventUrl: {}", eventUrl);
         Result result = new Result();
         result.setSuccess(true);
         result.setMessage("Account creation successful");
@@ -106,6 +108,10 @@ public class EventController {
         ResponseEntity response = new ResponseEntity(result, HttpStatus.OK);
 
         LOG.debug("response {}", response);
-        return response;
+        try {
+            return response;
+        }finally {
+            LOG.trace("EXIT processUrl()");
+        }
     }
 }
