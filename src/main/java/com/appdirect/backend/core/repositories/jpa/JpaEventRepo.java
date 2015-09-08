@@ -41,10 +41,10 @@ public class JpaEventRepo implements EventRepo{
     }
 
     @Override
-    public Event findEvent(Long id) {
+    public Event findEvent(String uuid) {
         LOG.trace("ENTER findEvent");
         try {
-            return em.find(Event.class, id);
+            return em.find(Event.class, uuid);
         } finally {
             LOG.trace("EXIT findEvent()");
         }
@@ -62,10 +62,10 @@ public class JpaEventRepo implements EventRepo{
     }
 
     @Override
-    public Event deleteEvent(Long id) {
+    public Event deleteEvent(String uuid) {
         LOG.trace("ENTER deleteEvent()");
         try {
-            Event event = em.find(Event.class, id);
+            Event event = em.find(Event.class, uuid);
             em.remove(event);
             return event;
         } finally {

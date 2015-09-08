@@ -1,6 +1,7 @@
 package com.appdirect.backend.core.services.impl;
 
 import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.model.response.Result;
 import com.appdirect.backend.core.repositories.EventRepo;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
@@ -25,6 +26,13 @@ public class EventServiceImpl implements EventService{
     @Autowired
     private EventRepo eventRepo;
 
+    private String successResponse = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<result>\n" +
+            "    <success>true</success>\n" +
+            "    <message>Account creation successful</message>\n" +
+            "    <accountIdentifier>1</accountIdentifier>\n" +
+            "</result>";
+
     @Override
     public EventList findAllEvents() {
         LOG.trace("ENTER findAllEvents()");
@@ -36,10 +44,10 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Event findEvent(Long id) {
+    public Event findEvent(String uuid) {
         LOG.trace("ENTER findEvent()");
         try {
-            return eventRepo.findEvent(id);
+            return eventRepo.findEvent(uuid);
         } finally {
             LOG.trace("EXIT findEvent()");
         }
@@ -49,10 +57,10 @@ public class EventServiceImpl implements EventService{
     public Event createEvent(Event data) {
         LOG.trace("ENTER createEvent()");
         try {
-            if (data.getId() == null) {
+            if (data.getUuid() == null) {
                 return eventRepo.createEvent(data);
             } else {
-                Event event = eventRepo.findEvent(data.getId());
+                Event event = eventRepo.findEvent(data.getUuid());
                 if (event != null) {
                     throw new EventExistsException();
                 } else {
@@ -65,12 +73,18 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Event deleteEvent(Long id) {
+    public Event deleteEvent(String uuid) {
         LOG.trace("ENTER deleteEvent()");
         try {
-            return eventRepo.deleteEvent(id);
+            return eventRepo.deleteEvent(uuid);
         } finally {
             LOG.trace("EXIT deleteEvent()");
         }
+    }
+
+    @Override
+    public Result subscribe(String url) {
+
+        return null;
     }
 }

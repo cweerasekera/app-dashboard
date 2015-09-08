@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
-        <production.tomcat.version>7.0.57.2</production.tomcat.version>
+        <production.tomcat.version>8.0.24.0</production.tomcat.version>
     </properties>
     
     <dependencyManagement>
@@ -72,9 +72,15 @@
 		
         <!-- Compile/runtime dependencies -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+            <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -107,6 +113,12 @@
         	<groupId>org.springframework</groupId>
         	<artifactId>spring-test</artifactId>
         	<scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>test</scope>
         </dependency>
 		<dependency>
 			<groupId>xalan</groupId>
