@@ -55,32 +55,32 @@ public class EventControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
     
-    //@Test
+    @Test
     public void getExistingEvent() throws Exception{
         Event event = new Event();
-        event.setId(1L);
+        event.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event.setType("SUBSCRIPTION_ORDER");
         
-        when(service.findEvent(1L)).thenReturn(event);
+        when(service.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(event);
         
-        mockMvc.perform(get("/rest/events/1").accept(MediaType.APPLICATION_XML))
+        mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(xpath("/EventResource/type").string(event.getType()))
                 .andDo(print());
     }
 
-    //@Test
+    @Test
     public void getNonExistingEvent() throws Exception{
-        when(service.findEvent(1L)).thenReturn(null);
+        when(service.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(null);
 
-        mockMvc.perform(get("/rest/events/1"))
+        mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf"))
                 .andExpect(status().isNotFound());
     }
 
-    //@Test
+    @Test
     public void createNonExistingEvent() throws Exception {
         Event createdEvent = new Event();
-        createdEvent.setId(1L);
+        createdEvent.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         createdEvent.setType("SUBSCRIPTION_ORDER");
 
         when(service.createEvent(any(Event.class))).thenReturn(createdEvent);
@@ -93,17 +93,17 @@ public class EventControllerTest {
                 .andDo(print());
     }
 
-    //@Test
+    @Test
     public void findAllEvents() throws Exception{
         List<Event> list = new ArrayList<Event>();
 
         Event event1 = new Event();
-        event1.setId(1L);
+        event1.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event1.setType("Test Event 1");
         list.add(event1);
 
         Event event2 = new Event();
-        event2.setId(2L);
+        event2.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event2.setType("Test Event 2");
         list.add(event2);
 
@@ -121,6 +121,6 @@ public class EventControllerTest {
 
     @Test
     public void processUrl() throws Exception {
-        mockMvc.perform(get("/rest/events/url")).andDo(print());
+        mockMvc.perform(get("/rest/events/url/abc")).andDo(print());
     }
 }

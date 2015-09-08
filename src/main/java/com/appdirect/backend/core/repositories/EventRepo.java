@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface EventRepo {
     public List<Event> findAllEvents();
-    public Event findEvent(Long id);
+    public Event findEvent(String uuid);
     public Event createEvent(Event data);
-    public Event deleteEvent(Long id);
+    public Event deleteEvent(String uuid);
 }

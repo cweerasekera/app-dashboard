@@ -4,6 +4,7 @@
 package com.appdirect.backend.rest.controllers;
 
 import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.model.response.Result;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
 import com.appdirect.backend.core.services.util.EventList;
@@ -19,11 +20,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
 /**
@@ -62,7 +61,7 @@ public class EventController {
     }
 
     @RequestMapping(value="/{eventId}", method = RequestMethod.GET)
-    public ResponseEntity<EventResource> getEvent(@PathVariable Long eventId){
+    public ResponseEntity<EventResource> getEvent(@PathVariable String eventId){
         LOG.trace("ENTER getEvent()");
         Event event = eventService.findEvent(eventId);
 
@@ -98,8 +97,14 @@ public class EventController {
     }
 
     @RequestMapping(value="/url/{eventUrl}", method = RequestMethod.GET)
-    public String processUrl(@PathVariable String eventUrl){
-        String response = eventService.subscribe(eventUrl);
+    public ResponseEntity<Result> processUrl(@PathVariable String eventUrl){
+        //Event createdEvent = eventService.createEvent();
+        Result result = new Result();
+        result.setSuccess(true);
+        result.setMessage("Account creation successful");
+        result.setAccountIdentifier("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
+        ResponseEntity response = new ResponseEntity(result, HttpStatus.OK);
+
         LOG.debug("response {}", response);
         return response;
     }
