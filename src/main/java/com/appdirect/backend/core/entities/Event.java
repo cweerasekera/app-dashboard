@@ -3,6 +3,8 @@
  */
 package com.appdirect.backend.core.entities;
 
+import com.appdirect.backend.core.model.EventModel;
+
 import javax.persistence.*;
 
 /**
@@ -13,23 +15,14 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name=Event.QUERY_SELECT_ALL, query = "SELECT e FROM event e")
 })
-public class Event {
+public class Event extends BaseEntity implements EventModel{
 
     public static final String QUERY_SELECT_ALL = "event.findAll";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name="type", nullable = false)
     private String type;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    @Override
     public String getType() {
         return type;
     }

@@ -25,8 +25,13 @@ public class EventResourceAsm extends ResourceAssemblerSupport<Event, EventResou
     @Override
     public EventResource toResource(Event event) {
         EventResource res = new EventResource();
+        res.setUuid(event.getUuid());
         res.setType(event.getType());
-        Link self = linkTo(EventController.class).slash(event.getId()).withSelfRel();
+        res.setCreatedBy(event.getCreatedBy());
+        res.setCreatedDate(event.getCreatedDate());
+        res.setModifiedBy(event.getModifiedBy());
+        res.setLastModified(event.getLastModified());
+        Link self = linkTo(EventController.class).slash(event.getUuid()).withSelfRel();
         res.add(self);
         return res;
     }

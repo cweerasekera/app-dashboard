@@ -51,7 +51,7 @@ public class EventRepoTest {
     @Transactional
     public void testFind(){
         LOG.trace("ENTER testFind()");
-        Event event = repo.findEvent(this.event.getId());
+        Event event = repo.findEvent(this.event.getUuid());
         assertNotNull(event);
         LOG.trace("EXIT testFind()");
     }
@@ -73,7 +73,7 @@ public class EventRepoTest {
         List<Event> allEvents = repo.findAllEvents();
         assertNotNull(allEvents);
         for (Event event : allEvents){
-            LOG.debug("Event {}: {}", event.getId(), event.getType());
+            LOG.debug("Event {}: {}", event.getUuid(), event.getType());
         }
         LOG.trace("EXIT testFindAll()");
     }
