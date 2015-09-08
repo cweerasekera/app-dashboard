@@ -56,7 +56,7 @@ public class EventControllerTest {
     }
     
     @Test
-    public void getExistingEvent() throws Exception{
+    public void A_getExistingEvent() throws Exception{
         Event event = new Event();
         event.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event.setType("SUBSCRIPTION_ORDER");
@@ -70,7 +70,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void getNonExistingEvent() throws Exception{
+    public void B_getNonExistingEvent() throws Exception{
         when(service.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(null);
 
         mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf"))
@@ -78,7 +78,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void createNonExistingEvent() throws Exception {
+    public void C_createNonExistingEvent() throws Exception {
         Event createdEvent = new Event();
         createdEvent.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         createdEvent.setType("SUBSCRIPTION_ORDER");
@@ -94,7 +94,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void findAllEvents() throws Exception{
+    public void D_findAllEvents() throws Exception{
         List<Event> list = new ArrayList<Event>();
 
         Event event1 = new Event();
@@ -120,7 +120,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void processUrl() throws Exception {
+    public void E_processUrl() throws Exception {
         mockMvc.perform(get("/rest/events/url/abc")).andDo(print());
     }
 }
