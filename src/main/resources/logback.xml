@@ -9,9 +9,9 @@
         </encoder>
     </appender>
 
-    <logger level="WARN" name="com.appdirect.backend" />
+    <logger level="TRACE" name="com.appdirect.backend" />
 
-    <root level="WARN">
+    <root level="TRACE">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
