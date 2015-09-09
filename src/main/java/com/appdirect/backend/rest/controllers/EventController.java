@@ -11,8 +11,10 @@ import com.appdirect.backend.core.services.util.EventList;
 import com.appdirect.backend.rest.exceptions.ConflictException;
 import com.appdirect.backend.rest.resources.EventListResource;
 import com.appdirect.backend.rest.resources.EventResource;
+import com.appdirect.backend.rest.resources.ResultResource;
 import com.appdirect.backend.rest.resources.asm.EventListResourceAsm;
 import com.appdirect.backend.rest.resources.asm.EventResourceAsm;
+import com.appdirect.backend.rest.resources.asm.ResultResourceAsm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.net.URL;
 
 /**
  * @author cweerasekera
@@ -97,17 +100,19 @@ public class EventController {
     }
 
     @RequestMapping(value="/url/{eventUrl}", method = RequestMethod.GET)
-    public ResponseEntity<Result> processUrl(@PathVariable String eventUrl){
+    public ResponseEntity<ResultResource> processUrl(@PathVariable String eventUrl){
         LOG.trace("ENTER processUrl()");
         //Event createdEvent = eventService.createEvent();
-        LOG.debug("EventUrl: {}", eventUrl);
+        LOG.debug("EVENT URL >>>> : {}", eventUrl);
         Result result = new Result();
         result.setSuccess(true);
         result.setMessage("Account creation successful");
         result.setAccountIdentifier("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
-        ResponseEntity response = new ResponseEntity(result, HttpStatus.OK);
+        ResultResource res = new ResultResourceAsm().toResource(result);
 
-        LOG.debug("response {}", response);
+        ResponseEntity response = new ResponseEntity<ResultResource>(res, HttpStatus.OK);
+
+        LOG.debug("RESPONSE >>>> {}", response);
         try {
             return response;
         }finally {
