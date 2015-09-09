@@ -27,6 +27,7 @@ public class EventResourceAsm extends ResourceAssemblerSupport<Event, EventResou
         EventResource res = new EventResource();
         res.setUuid(event.getUuid());
         res.setType(event.getType());
+        res.setFlag(event.getFlag());
         res.setCreatedBy(event.getCreatedBy());
         res.setCreatedDate(event.getCreatedDate());
         res.setModifiedBy(event.getModifiedBy());

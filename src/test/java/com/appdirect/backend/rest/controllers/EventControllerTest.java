@@ -60,7 +60,8 @@ public class EventControllerTest {
         Event event = new Event();
         event.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event.setType("SUBSCRIPTION_ORDER");
-        
+        event.setFlag("DEVELOPMENT");
+
         when(service.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(event);
         
         mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf").accept(MediaType.APPLICATION_XML))
@@ -82,6 +83,7 @@ public class EventControllerTest {
         Event createdEvent = new Event();
         createdEvent.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         createdEvent.setType("SUBSCRIPTION_ORDER");
+        createdEvent.setFlag("DEVELOPMENT");
 
         when(service.createEvent(any(Event.class))).thenReturn(createdEvent);
 
@@ -100,11 +102,13 @@ public class EventControllerTest {
         Event event1 = new Event();
         event1.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event1.setType("Test Event 1");
+        event1.setFlag("DEVELOPMENT");
         list.add(event1);
 
         Event event2 = new Event();
         event2.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event2.setType("Test Event 2");
+        event2.setFlag("DEVELOPMENT");
         list.add(event2);
 
         EventList eventList = new EventList(list);
@@ -121,6 +125,8 @@ public class EventControllerTest {
 
     @Test
     public void E_processUrl() throws Exception {
-        mockMvc.perform(get("/rest/events/url/abc")).andDo(print());
+        mockMvc.perform(get("/rest/events/url/abc"))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
