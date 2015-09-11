@@ -63,10 +63,10 @@ public class EventController {
 
     }
 
-    @RequestMapping(value="/{eventId}", method = RequestMethod.GET)
-    public ResponseEntity<EventResource> getEvent(@PathVariable String eventId){
+    @RequestMapping(value="/{uuid}", method = RequestMethod.GET)
+    public ResponseEntity<EventResource> getEvent(@PathVariable String uuid){
         LOG.trace("ENTER getEvent()");
-        Event event = eventService.findEvent(eventId);
+        Event event = eventService.findEvent(uuid);
 
         try{
             if(event != null){

@@ -4,7 +4,9 @@
 package com.appdirect.backend.rest.controllers;
 
 import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.entities.Marketplace;
 import com.appdirect.backend.core.services.EventService;
+import com.appdirect.backend.core.services.MarketplaceService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
 import com.appdirect.backend.core.services.util.EventList;
 import org.hamcrest.Matchers;
@@ -13,6 +15,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -37,12 +41,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  */
 public class EventControllerTest {
+    private static final Logger LOG = LoggerFactory.getLogger(EventControllerTest.class);
     @InjectMocks
     private EventController controller;
     
     @Mock
     private EventService service;
-    
+
+    @Mock
+    private MarketplaceService marketplaceService;
+
     private MockMvc mockMvc;
 
     private static String ATOM_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
@@ -57,10 +65,18 @@ public class EventControllerTest {
     
     @Test
     public void A_getExistingEvent() throws Exception{
+        LOG.trace("--> A_getExistingEvent()");
         Event event = new Event();
         event.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event.setType("SUBSCRIPTION_ORDER");
         event.setFlag("DEVELOPMENT");
+
+        Marketplace marketplace = new Marketplace();
+        marketplace.setUuid("a49cfcdd-1438-415c-99c2-bd646b4c4020");
+        marketplace.setBaseUrl("http://test.com");
+        marketplace.setPartner("APPDIRECT");
+
+        event.setMarketplace(marketplace);
 
         when(service.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(event);
         
@@ -68,6 +84,7 @@ public class EventControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(xpath("/EventResource/type").string(event.getType()))
                 .andDo(print());
+        LOG.trace("<-- A_getExistingEvent()");
     }
 
     @Test
@@ -98,7 +115,6 @@ public class EventControllerTest {
     @Test
     public void D_findAllEvents() throws Exception{
         List<Event> list = new ArrayList<Event>();
-
         Event event1 = new Event();
         event1.setUuid("f4bdda18-4db3-4475-9109-24bed5ae6ecf");
         event1.setType("Test Event 1");
