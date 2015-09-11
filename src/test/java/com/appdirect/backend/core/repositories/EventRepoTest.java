@@ -39,27 +39,27 @@ public class EventRepoTest {
     @Transactional
     @Rollback(false)
     public void testCreate(){
-        LOG.trace("ENTER testCreate()");
+        LOG.trace("--> testCreate()");
         event = new Event();
         event.setType("test");
         repo.createEvent(event);
-        LOG.trace("EXIT testCreate()");
+        LOG.trace("<-- testCreate()");
         
     }
 
     @Test
     @Transactional
     public void testFind(){
-        LOG.trace("ENTER testFind()");
+        LOG.trace("--> testFind()");
         Event event = repo.findEvent(this.event.getUuid());
         assertNotNull(event);
-        LOG.trace("EXIT testFind()");
+        LOG.trace("<-- testFind()");
     }
 
     @Test
     @Transactional
     public void testFindAll(){
-        LOG.trace("ENTER testFindAll()");
+        LOG.trace("--> testFindAll()");
 
         Event event1 = new Event();
         event1.setType("Test Event 1");
@@ -75,6 +75,6 @@ public class EventRepoTest {
         for (Event event : allEvents){
             LOG.debug("Event {}: {}", event.getUuid(), event.getType());
         }
-        LOG.trace("EXIT testFindAll()");
+        LOG.trace("<-- testFindAll()");
     }
 }
