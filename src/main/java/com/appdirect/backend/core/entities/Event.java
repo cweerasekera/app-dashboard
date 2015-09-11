@@ -26,7 +26,7 @@ public class Event extends BaseEntity implements EventModel{
     private String flag;
 
     @OneToOne
-    @Column(name = "marketplace")
+    @JoinColumn(name = "marketplace_id")
     private Marketplace marketplace;
 
     public void setType(String type) {

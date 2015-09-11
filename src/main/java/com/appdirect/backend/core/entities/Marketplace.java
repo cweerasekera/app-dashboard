@@ -2,11 +2,24 @@ package com.appdirect.backend.core.entities;
 
 import com.appdirect.backend.core.model.MarketplaceModel;
 
+import javax.persistence.*;
+
 /**
  * Created by cweerasekera on 09/09/2015.
  */
+@Entity(name = "marketplace")
+@Table(name = "marketplace")
+@NamedQueries({
+        @NamedQuery(name=Marketplace.QUERY_SELECT_ALL, query = "SELECT m FROM marketplace m")
+})
 public class Marketplace extends BaseEntity implements MarketplaceModel{
+
+    public static final String QUERY_SELECT_ALL = "marketplace.findAll";
+
+    @Column(name = "baseUrl")
     private String baseUrl;
+
+    @Column(name = "partner")
     private String partner;
 
     @Override

@@ -26,8 +26,7 @@ public class MarketplaceResourceAsm extends ResourceAssemblerSupport<Marketplace
         res.setCreatedDate(entity.getCreatedDate());
         res.setModifiedBy(entity.getModifiedBy());
         res.setLastModified(entity.getLastModified());
-        //res.add(linkTo(MarketplaceController.class.getMatketplace(entity.getUuid())).withSelfRel());
-        //res.add(linkTo());
+        res.add(linkTo(MarketplaceController.class).slash(entity.getUuid()).withSelfRel());
         return res;
     }
 }

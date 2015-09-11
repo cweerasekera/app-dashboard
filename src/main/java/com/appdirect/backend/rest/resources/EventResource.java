@@ -40,6 +40,10 @@ public class EventResource extends BaseResource implements EventModel{
         this.flag = flag;
     }
 
+    public void setMarketplace(Marketplace marketplace) {
+        this.marketplace = marketplace;
+    }
+
     public Event toEvent(){
         Event event = new Event();
         //event.setUuid(getUuid());
