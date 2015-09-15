@@ -3,8 +3,11 @@ package com.appdirect.backend.rest.controllers;
 import com.appdirect.backend.core.entities.Marketplace;
 import com.appdirect.backend.core.services.MarketplaceService;
 import com.appdirect.backend.core.services.exceptions.MarketplaceExistsException;
+import com.appdirect.backend.core.services.util.MarketplaceList;
 import com.appdirect.backend.rest.exceptions.ConflictException;
+import com.appdirect.backend.rest.resources.MarketplaceListResource;
 import com.appdirect.backend.rest.resources.MarketplaceResource;
+import com.appdirect.backend.rest.resources.asm.MarketplaceListResourceAsm;
 import com.appdirect.backend.rest.resources.asm.MarketplaceResourceAsm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +27,7 @@ import java.net.URI;
  * Created by cweerasekera on 09/09/2015.
  */
 @Controller
-@RequestMapping("/rest/marketplace")
+@RequestMapping("/rest/marketplaces")
 public class MarketplaceController {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceController.class);
 
@@ -35,15 +38,27 @@ public class MarketplaceController {
         this.marketplaceService = marketplaceService;
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<MarketplaceListResource> findAllMarketplaces(){
+        LOG.trace("ENTER findAllMarketplaces()");
+        MarketplaceList list = marketplaceService.findAllMarketplaces();
+        MarketplaceListResource resource = new MarketplaceListResourceAsm().toResource(list);
+        try {
+            return new ResponseEntity<MarketplaceListResource>(resource,HttpStatus.OK);
+        } finally {
+            LOG.trace("EXIT findAllMarketplaces()");
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<MarketplaceResource> createMarketplace(@RequestBody MarketplaceResource sentMarketplace){
         LOG.trace("ENTER createMarketplace()");
         try {
             Marketplace createdMarketplace = marketplaceService.createMarketplace(sentMarketplace.toMarketplace());
-            MarketplaceResource res = new MarketplaceResourceAsm().toResource(createdMarketplace);
+            MarketplaceResource resource = new MarketplaceResourceAsm().toResource(createdMarketplace);
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create(res.getLink("self").getHref()));
-            return new ResponseEntity<MarketplaceResource>(res, headers, HttpStatus.CREATED);
+            headers.setLocation(URI.create(resource.getLink("self").getHref()));
+            return new ResponseEntity<MarketplaceResource>(resource, headers, HttpStatus.CREATED);
         }catch (MarketplaceExistsException e){
             LOG.error(e.getMessage(),e);
             throw new ConflictException(e);

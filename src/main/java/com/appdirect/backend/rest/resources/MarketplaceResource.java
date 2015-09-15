@@ -30,12 +30,13 @@ public class MarketplaceResource extends BaseResource implements MarketplaceMode
 
     public Marketplace toMarketplace(){
         Marketplace marketplace = new Marketplace();
-        marketplace.setBaseUrl(baseUrl);
-        marketplace.setPartner(partner);
+        marketplace.setUuid(getUuid());
         marketplace.setCreatedBy(getCreatedBy());
         marketplace.setCreatedDate(getCreatedDate());
         marketplace.setModifiedBy(getModifiedBy());
         marketplace.setLastModified(getLastModified());
+        marketplace.setBaseUrl(baseUrl);
+        marketplace.setPartner(partner);
         return marketplace;
     }
 }
