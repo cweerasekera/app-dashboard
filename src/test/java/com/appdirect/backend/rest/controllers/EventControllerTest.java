@@ -7,9 +7,7 @@ import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.entities.Marketplace;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.core.services.MarketplaceService;
-import com.appdirect.backend.core.services.exceptions.EventExistsException;
 import com.appdirect.backend.core.services.util.EventList;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -19,22 +17,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.endsWith;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 /**
  * @author cweerasekera
@@ -141,8 +135,9 @@ public class EventControllerTest {
 
     @Test
     public void E_processUrl() throws Exception {
-        mockMvc.perform(get("/rest/events/url/abc"))
-                .andExpect(status().isOk())
+        String url = "http://localhost:8080/rest/events/f1642e84-eaf4-4421-9d03-f3ab525add4c";
+        mockMvc.perform(get("/rest/events/url?url="+url))
+                //.andExpect(status().isOk())
                 .andDo(print());
     }
 }

@@ -10,11 +10,13 @@ import javax.persistence.*;
 @Entity(name = "marketplace")
 @Table(name = "marketplace")
 @NamedQueries({
-        @NamedQuery(name=Marketplace.QUERY_SELECT_ALL, query = "SELECT m FROM marketplace m")
+        @NamedQuery(name=Marketplace.QUERY_SELECT_ALL, query = "SELECT m FROM marketplace m"),
+        @NamedQuery(name=Marketplace.QUERY_SELECT_BY_BASE_URL, query = "SELECT m FROM marketplace m where m.baseUrl=?1")
 })
 public class Marketplace extends BaseEntity implements MarketplaceModel{
 
     public static final String QUERY_SELECT_ALL = "marketplace.findAll";
+    public static final String QUERY_SELECT_BY_BASE_URL = "marketplace.findByUrl";
 
     @Column(name = "baseUrl")
     private String baseUrl;

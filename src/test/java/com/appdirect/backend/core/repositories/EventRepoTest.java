@@ -4,7 +4,7 @@
 package com.appdirect.backend.core.repositories;
 
 import com.appdirect.backend.core.entities.Event;
-import com.appdirect.backend.core.services.util.EventList;
+import com.appdirect.backend.core.entities.Marketplace;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +30,10 @@ public class EventRepoTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventRepoTest.class);
     @Autowired
-    private EventRepo repo;
+    private EventRepo eventRepo;
+
+    @Autowired
+    private MarketplaceRepo marketplaceRepo;
 
     private Event event;
 
@@ -42,7 +44,17 @@ public class EventRepoTest {
         LOG.trace("--> testCreate()");
         event = new Event();
         event.setType("test");
-        repo.createEvent(event);
+        event.setFlag("DEVELOPMENT");
+
+        Marketplace marketplace = new Marketplace();
+        marketplace.setBaseUrl("http://www.example.com");
+        marketplace.setPartner("APPDIRECT");
+
+        marketplace = marketplaceRepo.createMarketplace(marketplace);
+
+        event.setMarketplace(marketplace);
+
+        eventRepo.createEvent(event);
         LOG.trace("<-- testCreate()");
         
     }
@@ -51,8 +63,11 @@ public class EventRepoTest {
     @Transactional
     public void testFind(){
         LOG.trace("--> testFind()");
-        Event event = repo.findEvent(this.event.getUuid());
+        Event event = eventRepo.findEvent(this.event.getUuid());
         assertNotNull(event);
+
+        Marketplace marketplace = marketplaceRepo.findMarketplace(event.getMarketplace().getUuid());
+        assertNotNull(marketplace);
         LOG.trace("<-- testFind()");
     }
 
@@ -67,10 +82,10 @@ public class EventRepoTest {
         Event event2 = new Event();
         event2.setType("Test Event 2");
 
-        repo.createEvent(event1);
-        repo.createEvent(event2);
+        eventRepo.createEvent(event1);
+        eventRepo.createEvent(event2);
 
-        List<Event> allEvents = repo.findAllEvents();
+        List<Event> allEvents = eventRepo.findAllEvents();
         assertNotNull(allEvents);
         for (Event event : allEvents){
             LOG.debug("Event {}: {}", event.getUuid(), event.getType());

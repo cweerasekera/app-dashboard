@@ -11,5 +11,6 @@ public interface MarketplaceRepo {
     public Marketplace createMarketplace(Marketplace data);
     public List<Marketplace> findAllMarketplaces();
     public Marketplace findMarketplace(String uuid);
+    public Marketplace findByBaseUrl(String url);
 }
 

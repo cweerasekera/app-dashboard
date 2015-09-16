@@ -27,7 +27,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 
 /**
  * @author cweerasekera
@@ -105,6 +109,18 @@ public class EventController {
         LOG.trace("ENTER processUrl()");
         //Event createdEvent = eventService.createEvent();
         LOG.debug("EVENT URL >>>> : {}", eventUrl);
+        try {
+            URL url = new URL(eventUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            Object responseEntity = connection.getContent();
+            LOG.debug("content >>> {}",responseEntity);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Result result = new Result();
         result.setSuccess(true);
         result.setMessage("Account creation successful");
