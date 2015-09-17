@@ -7,6 +7,7 @@ import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.entities.Marketplace;
 import com.appdirect.backend.core.services.EventService;
 import com.appdirect.backend.core.services.MarketplaceService;
+import com.appdirect.backend.core.services.UrlResourceService;
 import com.appdirect.backend.core.services.util.EventList;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,10 @@ public class EventControllerTest {
     private EventController controller;
     
     @Mock
-    private EventService service;
+    private EventService eventService;
+
+    @Mock
+    private UrlResourceService urlResourceService;
 
     @Mock
     private MarketplaceService marketplaceService;
@@ -72,7 +76,7 @@ public class EventControllerTest {
 
         event.setMarketplace(marketplace);
 
-        when(service.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(event);
+        when(eventService.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(event);
         
         mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -83,7 +87,7 @@ public class EventControllerTest {
 
     @Test
     public void B_getNonExistingEvent() throws Exception{
-        when(service.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(null);
+        when(eventService.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(null);
 
         mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf"))
                 .andExpect(status().isNotFound());
@@ -96,7 +100,7 @@ public class EventControllerTest {
         createdEvent.setType("SUBSCRIPTION_ORDER");
         createdEvent.setFlag("DEVELOPMENT");
 
-        when(service.createEvent(any(Event.class))).thenReturn(createdEvent);
+        when(eventService.createEvent(any(Event.class))).thenReturn(createdEvent);
 
         mockMvc.perform(post("/rest/events")
                 .contentType(MediaType.APPLICATION_XML)
@@ -123,21 +127,29 @@ public class EventControllerTest {
 
         EventList eventList = new EventList(list);
 
-        when(service.findAllEvents()).thenReturn(eventList);
+        when(eventService.findAllEvents()).thenReturn(eventList);
 
         mockMvc.perform(get("/rest/events"))
                 //.andExpect(xpath("/EventResource/type"))
                 .andExpect(status().isOk())
                 .andDo(print());
-
-
     }
 
     @Test
     public void E_processUrl() throws Exception {
-        String url = "http://localhost:8080/rest/events/f1642e84-eaf4-4421-9d03-f3ab525add4c";
-        mockMvc.perform(get("/rest/events/url?url="+url))
-                //.andExpect(status().isOk())
+        String url = "http://localhost:8080/rest/events/85d13551-6d58-4ec8-b588-2311233a9971";
+
+        Event event = new Event();
+        event.setUuid("85d13551-6d58-4ec8-b588-2311233a9971");
+        event.setType("Type Test 1");
+        event.setFlag("DEVELOPMETN");
+        event.setMarketplace(null);
+
+        when(urlResourceService.findEvent(url)).thenReturn(event);
+        when(eventService.createEvent(any(Event.class))).thenReturn(event);
+
+        mockMvc.perform(get("/rest/events/url?eventUrl="+url))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }

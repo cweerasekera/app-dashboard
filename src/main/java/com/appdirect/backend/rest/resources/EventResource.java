@@ -50,16 +50,16 @@ public class EventResource extends BaseResource implements EventModel{
     public Event toEvent(){
         LOG.trace("ENTER toEvent()");
         Event event = new Event();
-        event.setUuid(getUuid());
-        event.setType(type);
-        event.setFlag(flag);
-        event.setMarketplace(marketplace);
-        event.setCreatedBy(getCreatedBy());
+        event.setUuid(this.getUuid());
+        event.setType(this.getType());
+        event.setFlag(this.getFlag());
+        event.setMarketplace(this.getMarketplace());
+        /*event.setCreatedBy(getCreatedBy());
         event.setCreatedDate(getCreatedDate());
         event.setModifiedBy(getModifiedBy());
-        event.setLastModified(getLastModified());
+        event.setLastModified(getLastModified());*/
         try {
-            LOG.debug("Event > 1:{} 2:{} 3:{} 4:{} 5:{} 6:{}",event.getUuid(),event.getType(),event.getFlag(), event.getMarketplace(),event.getCreatedBy(),event.getLastModified());
+            LOG.debug("Event > Event.uuid:{} Event.type:{} Event.marketplace:{} EventResource.dateModified:{}",event.getUuid(),event.getType(), event.getMarketplace(),this.getLastModified());
             return event;
         } finally {
             LOG.trace("EXIT toEvent()");

@@ -6,6 +6,7 @@ package com.appdirect.backend.rest.controllers;
 import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.model.response.Result;
 import com.appdirect.backend.core.services.EventService;
+import com.appdirect.backend.core.services.UrlResourceService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
 import com.appdirect.backend.core.services.util.EventList;
 import com.appdirect.backend.rest.exceptions.ConflictException;
@@ -18,10 +19,11 @@ import com.appdirect.backend.rest.resources.asm.ResultResourceAsm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 
@@ -33,12 +35,15 @@ import java.net.URI;
 @RequestMapping("/rest/events")
 public class EventController {
     private Logger LOG = LoggerFactory.getLogger(EventController.class);
+
     private EventService eventService;
+    private UrlResourceService urlResourceService;
 
     @Autowired
-    public EventController(EventService service){
+    public EventController(EventService eventService, UrlResourceService urlResourceService){
         LOG.trace("ENTER Constructor()");
-        this.eventService = service;
+        this.eventService = eventService;
+        this.urlResourceService = urlResourceService;
         LOG.trace("EXIT Constructor()");
     }
 
@@ -98,19 +103,14 @@ public class EventController {
 
     @RequestMapping(value="/url", method = RequestMethod.GET)
     public ResponseEntity<ResultResource> processUrl(@RequestParam("eventUrl") String eventUrl){
-        LOG.trace("ENTER processUrl()");
-        LOG.debug("EVENT URL >>>> : {}", eventUrl);
+        LOG.trace("ENTER processUrl({})", eventUrl);
+        Event eventFound = urlResourceService.findEvent(eventUrl);
 
-        RestTemplate template = new RestTemplate();
-        HttpEntity<EventResource> entity = template.getForEntity(eventUrl, EventResource.class);
-        EventResource event = entity.getBody();
-        MediaType contentType = entity.getHeaders().getContentType();
+        LOG.debug("Remote UUID: {}",eventFound.getUuid());
+        Event createdEvent = eventService.createEvent(eventFound);
 
-        LOG.debug("Remote UUID: {}",event.getUuid());
-        event.setFlag("DEVELOPMENT");
-        Event createdEvent = eventService.createEvent(event.toEvent());
-
-        LOG.debug("Created Event >> {}",createdEvent);
+        LOG.debug("Event > { uuid: {}, type: {}, marketplace: {}, dateModified: {} }",
+                eventFound.getUuid(), eventFound.getType(), eventFound.getMarketplace(), eventFound.getLastModified());
 
         Result result = new Result();
         result.setSuccess(true);
