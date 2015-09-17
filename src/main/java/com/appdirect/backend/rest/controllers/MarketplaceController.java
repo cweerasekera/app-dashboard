@@ -67,7 +67,7 @@ public class MarketplaceController {
         }
     }
 
-    @RequestMapping(value = "/uuid")
+    @RequestMapping(value = "/{uuid}")
     public ResponseEntity<MarketplaceResource> getMarketplace(@PathVariable String uuid){
         LOG.trace("ENTER getMarketplace()");
         Marketplace marketplace = marketplaceService.findMarketplace(uuid);

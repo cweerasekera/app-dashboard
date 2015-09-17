@@ -18,20 +18,12 @@ import com.appdirect.backend.rest.resources.asm.ResultResourceAsm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
 /**
  * @author cweerasekera
@@ -104,22 +96,21 @@ public class EventController {
         }
     }
 
-    @RequestMapping(value="/url/{eventUrl}", method = RequestMethod.GET)
-    public ResponseEntity<ResultResource> processUrl(@PathVariable String eventUrl){
+    @RequestMapping(value="/url", method = RequestMethod.GET)
+    public ResponseEntity<ResultResource> processUrl(@RequestParam("eventUrl") String eventUrl){
         LOG.trace("ENTER processUrl()");
-        //Event createdEvent = eventService.createEvent();
         LOG.debug("EVENT URL >>>> : {}", eventUrl);
-        try {
-            URL url = new URL(eventUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            Object responseEntity = connection.getContent();
-            LOG.debug("content >>> {}",responseEntity);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        RestTemplate template = new RestTemplate();
+        HttpEntity<EventResource> entity = template.getForEntity(eventUrl, EventResource.class);
+        EventResource event = entity.getBody();
+        MediaType contentType = entity.getHeaders().getContentType();
+
+        LOG.debug("Remote UUID: {}",event.getUuid());
+        event.setFlag("DEVELOPMENT");
+        Event createdEvent = eventService.createEvent(event.toEvent());
+
+        LOG.debug("Created Event >> {}",createdEvent);
 
         Result result = new Result();
         result.setSuccess(true);

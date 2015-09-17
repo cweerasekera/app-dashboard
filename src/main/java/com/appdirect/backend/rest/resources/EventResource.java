@@ -6,12 +6,16 @@ package com.appdirect.backend.rest.resources;
 import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.entities.Marketplace;
 import com.appdirect.backend.core.model.EventModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author cweerasekera
  *
  */
 public class EventResource extends BaseResource implements EventModel{
+    private  static final Logger LOG = LoggerFactory.getLogger(EventResource.class);
+
     private String type;
     private String flag;
     private Marketplace marketplace;
@@ -44,6 +48,7 @@ public class EventResource extends BaseResource implements EventModel{
     }
 
     public Event toEvent(){
+        LOG.trace("ENTER toEvent()");
         Event event = new Event();
         event.setUuid(getUuid());
         event.setType(type);
@@ -53,6 +58,11 @@ public class EventResource extends BaseResource implements EventModel{
         event.setCreatedDate(getCreatedDate());
         event.setModifiedBy(getModifiedBy());
         event.setLastModified(getLastModified());
-        return event;
+        try {
+            LOG.debug("Event > 1:{} 2:{} 3:{} 4:{} 5:{} 6:{}",event.getUuid(),event.getType(),event.getFlag(), event.getMarketplace(),event.getCreatedBy(),event.getLastModified());
+            return event;
+        } finally {
+            LOG.trace("EXIT toEvent()");
+        }
     }
 }
