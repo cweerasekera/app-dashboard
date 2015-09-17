@@ -3,19 +3,18 @@
  */
 package com.appdirect.backend.core.repositories.jpa;
 
-import static com.appdirect.backend.core.entities.Event.QUERY_SELECT_ALL;
-
+import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.repositories.EventRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
-import com.appdirect.backend.core.entities.Event;
-import com.appdirect.backend.core.repositories.EventRepo;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+
+import static com.appdirect.backend.core.entities.Event.QUERY_SELECT_ALL;
 
 /**
  * @author cweerasekera

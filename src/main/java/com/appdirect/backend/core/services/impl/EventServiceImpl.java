@@ -1,18 +1,20 @@
 package com.appdirect.backend.core.services.impl;
 
 import com.appdirect.backend.core.entities.Event;
+import com.appdirect.backend.core.entities.Marketplace;
 import com.appdirect.backend.core.model.response.Result;
 import com.appdirect.backend.core.repositories.EventRepo;
+import com.appdirect.backend.core.repositories.MarketplaceRepo;
 import com.appdirect.backend.core.services.EventService;
+import com.appdirect.backend.core.services.exceptions.EventDoesNotExistsException;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
+import com.appdirect.backend.core.services.exceptions.MarketplaceExistsException;
 import com.appdirect.backend.core.services.util.EventList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Created by cweerasekera
@@ -25,6 +27,9 @@ public class EventServiceImpl implements EventService{
 
     @Autowired
     private EventRepo eventRepo;
+
+    @Autowired
+    private MarketplaceRepo marketplaceRepo;
 
     private String successResponse = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<result>\n" +
@@ -69,6 +74,30 @@ public class EventServiceImpl implements EventService{
             }
         }finally {
             LOG.trace("ENTER createEvent()");
+        }
+    }
+
+    @Override
+    public Marketplace createMarketplace(String eventId, Marketplace data) {
+        LOG.trace("ENTER createMarketplace()");
+        try {
+            Marketplace existingMarketplace = marketplaceRepo.findByBaseUrl(data.getBaseUrl());
+            if (existingMarketplace != null){
+                throw new MarketplaceExistsException();
+            }
+
+            Event event = eventRepo.findEvent(eventId);
+            if (event == null){
+                throw new EventDoesNotExistsException();
+            }
+
+            Marketplace createdMarketplace = marketplaceRepo.createMarketplace(data);
+
+
+
+            return null;
+        } finally {
+            LOG.trace("EXIT createMarketplace()");
         }
     }
 

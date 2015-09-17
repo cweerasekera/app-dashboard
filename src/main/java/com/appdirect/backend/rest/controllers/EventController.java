@@ -6,6 +6,7 @@ package com.appdirect.backend.rest.controllers;
 import com.appdirect.backend.core.entities.Event;
 import com.appdirect.backend.core.model.response.Result;
 import com.appdirect.backend.core.services.EventService;
+import com.appdirect.backend.core.services.UrlResourceService;
 import com.appdirect.backend.core.services.exceptions.EventExistsException;
 import com.appdirect.backend.core.services.util.EventList;
 import com.appdirect.backend.rest.exceptions.ConflictException;
@@ -24,9 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
-import java.net.URL;
 
 /**
  * @author cweerasekera
@@ -36,12 +35,15 @@ import java.net.URL;
 @RequestMapping("/rest/events")
 public class EventController {
     private Logger LOG = LoggerFactory.getLogger(EventController.class);
+
     private EventService eventService;
+    private UrlResourceService urlResourceService;
 
     @Autowired
-    public EventController(EventService service){
+    public EventController(EventService eventService, UrlResourceService urlResourceService){
         LOG.trace("ENTER Constructor()");
-        this.eventService = service;
+        this.eventService = eventService;
+        this.urlResourceService = urlResourceService;
         LOG.trace("EXIT Constructor()");
     }
 
@@ -63,10 +65,10 @@ public class EventController {
 
     }
 
-    @RequestMapping(value="/{eventId}", method = RequestMethod.GET)
-    public ResponseEntity<EventResource> getEvent(@PathVariable String eventId){
+    @RequestMapping(value="/{uuid}", method = RequestMethod.GET)
+    public ResponseEntity<EventResource> getEvent(@PathVariable String uuid){
         LOG.trace("ENTER getEvent()");
-        Event event = eventService.findEvent(eventId);
+        Event event = eventService.findEvent(uuid);
 
         try{
             if(event != null){
@@ -99,11 +101,17 @@ public class EventController {
         }
     }
 
-    @RequestMapping(value="/url/{eventUrl}", method = RequestMethod.GET)
-    public ResponseEntity<ResultResource> processUrl(@PathVariable String eventUrl){
-        LOG.trace("ENTER processUrl()");
-        //Event createdEvent = eventService.createEvent();
-        LOG.debug("EVENT URL >>>> : {}", eventUrl);
+    @RequestMapping(value="/url", method = RequestMethod.GET)
+    public ResponseEntity<ResultResource> processUrl(@RequestParam("eventUrl") String eventUrl){
+        LOG.trace("ENTER processUrl({})", eventUrl);
+        Event eventFound = urlResourceService.findEvent(eventUrl);
+
+        LOG.debug("Remote UUID: {}",eventFound.getUuid());
+        Event createdEvent = eventService.createEvent(eventFound);
+
+        LOG.debug("Event > { uuid: {}, type: {}, marketplace: {}, dateModified: {} }",
+                eventFound.getUuid(), eventFound.getType(), eventFound.getMarketplace(), eventFound.getLastModified());
+
         Result result = new Result();
         result.setSuccess(true);
         result.setMessage("Account creation successful");
