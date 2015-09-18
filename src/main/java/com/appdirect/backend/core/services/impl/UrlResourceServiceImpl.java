@@ -20,6 +20,7 @@ public class UrlResourceServiceImpl implements UrlResourceService {
     @Override
     public Event findEvent(String url) {
         LOG.trace("ENTER findEvent()");
+        LOG.debug("URL: [{}]",url);
         RestTemplate template = new RestTemplate();
         HttpEntity<EventResource> entity = template.getForEntity(url, EventResource.class);
         EventResource event = entity.getBody();

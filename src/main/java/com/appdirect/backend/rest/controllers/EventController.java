@@ -103,7 +103,7 @@ public class EventController {
 
     @RequestMapping(value="/url", method = RequestMethod.GET)
     public ResponseEntity<ResultResource> processUrl(@RequestParam("eventUrl") String eventUrl){
-        LOG.trace("ENTER processUrl({})", eventUrl);
+        LOG.trace("ENTER processUrl()");
         Event eventFound = urlResourceService.findEvent(eventUrl);
 
         LOG.debug("Remote UUID: {}",eventFound.getUuid());
