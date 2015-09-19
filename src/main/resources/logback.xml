@@ -11,7 +11,7 @@
 
     <logger level="TRACE" name="com.appdirect.backend" />
 
-    <root level="TRACE">
+    <root level="debug">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

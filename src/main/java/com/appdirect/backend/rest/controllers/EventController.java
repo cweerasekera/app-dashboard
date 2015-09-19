@@ -103,13 +103,13 @@ public class EventController {
 
     @RequestMapping(value="/subscription/create", method = RequestMethod.GET)
     public ResponseEntity<ResultResource> processUrl(@RequestParam("eventUrl") String eventUrl){
-        LOG.trace("ENTER processUrl({})", eventUrl);
+        LOG.trace("ENTER processUrl()");
         Event eventFound = urlResourceService.findEvent(eventUrl);
 
         LOG.debug("Remote UUID: {}",eventFound.getUuid());
         Event createdEvent = eventService.createEvent(eventFound);
 
-        LOG.debug("Event > { uuid: {}, type: {}, marketplace: {}, dateModified: {} }",
+        LOG.debug("Event: {uuid:{}, type:{}, marketplace:{}, dateModified:{}}",
                 eventFound.getUuid(), eventFound.getType(), eventFound.getMarketplace(), eventFound.getLastModified());
 
         Result result = new Result();

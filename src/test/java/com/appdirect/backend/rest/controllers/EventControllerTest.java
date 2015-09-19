@@ -100,6 +100,12 @@ public class EventControllerTest {
         createdEvent.setType("SUBSCRIPTION_ORDER");
         createdEvent.setFlag("DEVELOPMENT");
 
+        Marketplace marketplace = new Marketplace();
+        marketplace.setBaseUrl("http://www.example.com");
+        marketplace.setPartner("APPDIRECT");
+
+        createdEvent.setMarketplace(marketplace);
+
         when(eventService.createEvent(any(Event.class))).thenReturn(createdEvent);
 
         mockMvc.perform(post("/api/v1/events")

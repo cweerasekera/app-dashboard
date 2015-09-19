@@ -61,6 +61,17 @@ public class EventServiceImpl implements EventService{
     @Override
     public Event createEvent(Event data) {
         LOG.trace("ENTER createEvent()");
+        Marketplace marketplace = data.getMarketplace();
+        if(marketplace != null){
+            Marketplace marketplaceFound = marketplaceRepo.findByBaseUrl(marketplace.getBaseUrl());
+
+            if(marketplaceFound != null) {
+                data.setMarketplace(marketplaceFound);
+            }else{
+                marketplaceRepo.createMarketplace(marketplace);
+            }
+        }
+
         try {
             if (data.getUuid() == null) {
                 return eventRepo.createEvent(data);
