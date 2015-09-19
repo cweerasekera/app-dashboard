@@ -32,7 +32,7 @@ import java.net.URI;
  *
  */
 @Controller
-@RequestMapping("/rest/events")
+@RequestMapping("/api/v1/events")
 public class EventController {
     private Logger LOG = LoggerFactory.getLogger(EventController.class);
 
@@ -101,7 +101,7 @@ public class EventController {
         }
     }
 
-    @RequestMapping(value="/url", method = RequestMethod.GET)
+    @RequestMapping(value="/subscription/create", method = RequestMethod.GET)
     public ResponseEntity<ResultResource> processUrl(@RequestParam("eventUrl") String eventUrl){
         LOG.trace("ENTER processUrl({})", eventUrl);
         Event eventFound = urlResourceService.findEvent(eventUrl);
