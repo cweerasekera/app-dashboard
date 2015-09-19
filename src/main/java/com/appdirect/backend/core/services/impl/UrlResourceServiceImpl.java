@@ -25,7 +25,7 @@ public class UrlResourceServiceImpl implements UrlResourceService {
         HttpEntity<EventResource> entity = template.getForEntity(url, EventResource.class);
         EventResource event = entity.getBody();
         MediaType contentType = entity.getHeaders().getContentType();
-        LOG.debug("content-type",contentType);
+        LOG.debug("content-type {}",contentType);
         try {
             return event.toEvent();
         } finally {

@@ -1,12 +1,12 @@
 package com.appdirect.backend.core.entities;
 
 import com.appdirect.backend.core.model.BaseModel;
-import org.hibernate.annotations.GenericGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by cweerasekera.
@@ -18,8 +18,6 @@ public abstract class BaseEntity implements BaseModel{
     public static final String DB_DATA_TYPE_TIMESTAMP = "TIMESTAMP";
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String uuid;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -88,6 +86,10 @@ public abstract class BaseEntity implements BaseModel{
 
     @PrePersist
     protected  void prepersist(){
+        if (uuid == null){
+            uuid = UUID.fromString(UUID.randomUUID().toString()).toString();
+            LOG.debug("UUID @ prepersist() {}",getUuid());
+        }
         LOG.trace("ENTER prepersist()");
         createdDate = new Date();
         createdBy = "username"; //TODO
