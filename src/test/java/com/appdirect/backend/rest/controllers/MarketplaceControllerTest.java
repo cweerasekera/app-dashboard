@@ -48,7 +48,7 @@ public class MarketplaceControllerTest {
 
         when(service.findMarketplace(marketplace.getUuid())).thenReturn(marketplace);
 
-        mockMvc.perform(get("/rest/marketplaces/" + marketplace.getUuid()))
+        mockMvc.perform(get("/api/v1/marketplaces/" + marketplace.getUuid()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -72,7 +72,7 @@ public class MarketplaceControllerTest {
 
         when(service.findAllMarketplaces()).thenReturn(marketplaceList);
 
-        mockMvc.perform(get("/rest/marketplaces"))
+        mockMvc.perform(get("/api/v1/marketplaces"))
                 .andExpect(status().isOk())
                 .andDo(print());
 

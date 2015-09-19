@@ -27,7 +27,7 @@ import java.net.URI;
  * Created by cweerasekera on 09/09/2015.
  */
 @Controller
-@RequestMapping("/rest/marketplaces")
+@RequestMapping("/api/v1/marketplaces")
 public class MarketplaceController {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceController.class);
 

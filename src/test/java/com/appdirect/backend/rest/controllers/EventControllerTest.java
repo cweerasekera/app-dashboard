@@ -78,7 +78,7 @@ public class EventControllerTest {
 
         when(eventService.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(event);
         
-        mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf").accept(MediaType.APPLICATION_XML))
+        mockMvc.perform(get("/api/v1/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(xpath("/EventResource/type").string(event.getType()))
                 .andDo(print());
@@ -89,7 +89,7 @@ public class EventControllerTest {
     public void B_getNonExistingEvent() throws Exception{
         when(eventService.findEvent("f4bdda18-4db3-4475-9109-24bed5ae6ecf")).thenReturn(null);
 
-        mockMvc.perform(get("/rest/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf"))
+        mockMvc.perform(get("/api/v1/events/f4bdda18-4db3-4475-9109-24bed5ae6ecf"))
                 .andExpect(status().isNotFound());
     }
 
@@ -108,7 +108,7 @@ public class EventControllerTest {
 
         when(eventService.createEvent(any(Event.class))).thenReturn(createdEvent);
 
-        mockMvc.perform(post("/rest/events")
+        mockMvc.perform(post("/api/v1/events")
                 .contentType(MediaType.APPLICATION_XML)
                 .content(ATOM_XML.getBytes()))
                 .andExpect(xpath("/EventResource/type").string(createdEvent.getType()))
@@ -135,7 +135,7 @@ public class EventControllerTest {
 
         when(eventService.findAllEvents()).thenReturn(eventList);
 
-        mockMvc.perform(get("/rest/events"))
+        mockMvc.perform(get("/api/v1/events"))
                 //.andExpect(xpath("/EventResource/type"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -143,7 +143,7 @@ public class EventControllerTest {
 
     @Test
     public void E_processUrl() throws Exception {
-        String url = "http://localhost:8080/rest/events/85d13551-6d58-4ec8-b588-2311233a9971";
+        String url = "http://localhost:8080/api/v1/events/85d13551-6d58-4ec8-b588-2311233a9971";
 
         Event event = new Event();
         event.setUuid("85d13551-6d58-4ec8-b588-2311233a9971");
@@ -154,7 +154,7 @@ public class EventControllerTest {
         when(urlResourceService.findEvent(url)).thenReturn(event);
         when(eventService.createEvent(any(Event.class))).thenReturn(event);
 
-        mockMvc.perform(get("/rest/events/url?eventUrl="+url))
+        mockMvc.perform(get("/api/v1/events/subscription/create?eventUrl="+url))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
