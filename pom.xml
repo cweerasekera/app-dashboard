@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
         <production.tomcat.version>8.0.24.0</production.tomcat.version>
+        <spring.security.version>4.0.2.RELEASE</spring.security.version>
     </properties>
     
     <dependencyManagement>
@@ -45,6 +46,28 @@
 	        <artifactId>spring-hateoas</artifactId>
 	        <version>0.17.0.RELEASE</version>
 	    </dependency>
+
+        <!-- Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-openid</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.7</version>
+        </dependency>
 
         <!-- Database and related dependencies -->
 	    <dependency>
