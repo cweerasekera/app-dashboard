@@ -37,5 +37,8 @@
     <tx:annotation-driven/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+
     <context:component-scan base-package="com.appdirect.backend.core.services.impl"/>
+
+    <context:component-scan base-package="com.appdirect.backend.core.security"/>
 </beans>
