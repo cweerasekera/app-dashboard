@@ -12,7 +12,6 @@ import javax.persistence.Query;
 import java.util.List;
 
 import static com.appdirect.backend.core.entities.User.QUERY_SELECT_ALL;
-import static com.appdirect.backend.core.entities.User.QUERY_SELECT_BY_OPEN_ID;
 import static com.appdirect.backend.core.entities.User.QUERY_SELECT_BY_USERNAME;
 
 /**
@@ -48,7 +47,7 @@ public class JpaUserRepo implements UserRepo {
         }
     }
 
-    @Override
+    /*@Override
     public User findUserByOpenId(String openIdIdentifier) {
         Query query = em.createNamedQuery(QUERY_SELECT_BY_OPEN_ID);
         query.setParameter(1, openIdIdentifier);
@@ -58,7 +57,7 @@ public class JpaUserRepo implements UserRepo {
         }else {
             return users.get(0);
         }
-    }
+    }*/
 
     @Override
     public User createUser(User data) {

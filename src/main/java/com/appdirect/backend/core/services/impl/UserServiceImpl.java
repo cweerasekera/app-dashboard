@@ -31,10 +31,10 @@ public class UserServiceImpl implements UserService {
         return userRepo.findUserByUserName(username);
     }
 
-    @Override
+    /*@Override
     public User findUserByOpenId(String openIdIdentifier) {
         return userRepo.findUserByOpenId(openIdIdentifier);
-    }
+    }*/
 
     @Override
     public User createUser(User data) {

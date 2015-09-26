@@ -11,16 +11,16 @@ import javax.persistence.*;
 @Table(name = "user")
 @NamedQueries({
         @NamedQuery(name=User.QUERY_SELECT_ALL, query = "SELECT u FROM user u"),
-        @NamedQuery(name=User.QUERY_SELECT_BY_USERNAME, query = "SELECT u FROM user u WHERE u.username=?1"),
-        @NamedQuery(name=User.QUERY_SELECT_BY_OPEN_ID, query = "SELECT u FROM user u WHERE u.openIdIdentifier=?1")
+        @NamedQuery(name=User.QUERY_SELECT_BY_USERNAME, query = "SELECT u FROM user u WHERE u.username=?1")
+        //@NamedQuery(name=User.QUERY_SELECT_BY_OPEN_ID, query = "SELECT u FROM user u WHERE u.openIdIdentifier=?1")
 })
 public class User extends BaseEntity implements UserModel {
     public static final String QUERY_SELECT_ALL = "user.findAll";
     public static final String QUERY_SELECT_BY_USERNAME = "user.findByUsername";
     public static final String QUERY_SELECT_BY_OPEN_ID = "user.findByOpenId";
 
-    @Column(name = "openid_identifier")
-    private String openIdIdentifier;
+    //@Column(name = "openid_identifier")
+    //private String openIdIdentifier;
 
     @Column(name = "username", unique = true)
     private String username;
@@ -29,13 +29,13 @@ public class User extends BaseEntity implements UserModel {
 
     private String emailAddress;
 
-    public String getOpenIdIdentifier() {
+    /*public String getOpenIdIdentifier() {
         return openIdIdentifier;
     }
 
     public void setOpenIdIdentifier(String openIdIdentifier) {
         this.openIdIdentifier = openIdIdentifier;
-    }
+    }*/
 
     public String getUsername() {
         return username;

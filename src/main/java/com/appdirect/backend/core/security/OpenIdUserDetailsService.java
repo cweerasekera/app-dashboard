@@ -1,19 +1,11 @@
 package com.appdirect.backend.core.security;
 
-import com.appdirect.backend.core.entities.User;
-import com.appdirect.backend.core.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
-
 /**
  * Created by cweerasekera
  */
-@Component
-public class OpenIdUserDetailsService implements UserDetailsService {
+//@Component
+public class OpenIdUserDetailsService /*implements UserDetailsService*/ {
+/*
 
     @Autowired
     private UserService userService;
@@ -31,4 +23,5 @@ public class OpenIdUserDetailsService implements UserDetailsService {
         }
         return userAccount;
     }
+*/
 }
