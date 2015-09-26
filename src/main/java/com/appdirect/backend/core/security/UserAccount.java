@@ -4,6 +4,7 @@ import com.appdirect.backend.core.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -18,12 +19,21 @@ public class UserAccount implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        GrantedAuthority authority = new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "ROLE_USER";
+            }
+        };
+
+        ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(authority);
+        return authorities;
     }
 
-    public String getOpenIdIdentifier() {
+    /*public String getOpenIdIdentifier() {
         return user.getOpenIdIdentifier();
-    }
+    }*/
 
     @Override
     public String getPassword() {

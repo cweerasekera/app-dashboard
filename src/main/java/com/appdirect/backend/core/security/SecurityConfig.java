@@ -1,8 +1,9 @@
 package com.appdirect.backend.core.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
     private AuthSuccess authSuccess;
@@ -25,35 +27,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private EntryPointUnauthorizedHandler unauthorizedHandler;
 
-    @Autowired
+   /* @Autowired
     private OpenIdUserDetailsService openIdUserDetailsService;
 
     @Autowired
     public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
+        LOG.trace("ENTER configAuthBuilder()");
         builder.userDetailsService(openIdUserDetailsService);
-    }
+        LOG.trace("EXIT configAuthBuilder()");
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        LOG.trace("ENTER configure()");
         http
                 .csrf().disable()
-                .exceptionHandling()
-                    .authenticationEntryPoint(unauthorizedHandler)
-                    .and()
-                .formLogin()
-                    .successHandler(authSuccess)
-                    .failureHandler(authFailure)
-                .and()
                 .authorizeRequests()
-                    .antMatchers("*//**")
+                    .antMatchers("/resources/**")
                     .permitAll()
                     .anyRequest().authenticated()
                     .and()
+                .exceptionHandling()
+                    .authenticationEntryPoint(unauthorizedHandler)
+                    .and()
                 .openidLogin()
-                    .loginPage("/login.html")
+                .successHandler(authSuccess)
+                    .failureHandler(authFailure)
+                    .loginPage("/login")
                     .permitAll()
+                    .authenticationUserDetailsService(new CustomUserDetailsService())
                     .attributeExchange("https://www.google.com/.*")
-                        .attribute("email")
+                            .attribute("email")
                             .type("http://axschema.org/contact/email")
                             .required(true)
                             .and()
@@ -84,5 +88,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .attribute("fullname")
                             .type("http://schema.openid.net/namePerson")
                             .required(true);
+        LOG.trace("EXIT configure()");
     }
 }
